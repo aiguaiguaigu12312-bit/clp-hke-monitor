@@ -4,7 +4,7 @@
 self.addEventListener('notificationclick', function(event) {
   event.notification.close();
   event.waitUntil(
-    clients.openWindow('https://YOUR-GITHUB-USERNAME.github.io/YOUR-REPO-NAME/')
+    clients.openWindow('https://aiguaiguaigu12312-bit.github.io/YOUR-REPO-NAME/')
   );
 });
 
