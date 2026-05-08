@@ -3,39 +3,39 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CLP & HK Electric Real-Time Monitor | Web Push Alerts</title>
+  <title>CLP & HK Electric Monitor | Web Push Alerts</title>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Arial', sans-serif; background: #f0f2f5; padding: 20px; }
-    .container { max-width: 1200px; margin: 0 auto; background: white; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
-    header { background: #003366; color: white; padding: 25px; text-align: center; }
-    h1 { font-size: 24px; margin-bottom: 8px; }
-    .tagline { font-size: 14px; opacity: 0.9; }
-    .push-notice { background: #e3f2fd; color: #0066cc; padding: 12px; text-align: center; font-size: 14px; border-bottom: 1px solid #bbdefb; }
-    #pushBtn { background: #0066cc; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; margin-left: 8px; }
-    #pushBtn:disabled { background: #90caf9; cursor: not-allowed; }
-    .tabs { display: flex; border-bottom: 2px solid #e9ebee; }
-    .tab { padding: 15px 25px; cursor: pointer; font-weight: 600; background: #f5f7fa; border: none; flex: 1; }
-    .tab.active { background: white; border-bottom: 3px solid #0066cc; color: #0066cc; }
-    .tab-content { padding: 25px; display: none; }
-    .tab-content.active { display: block; }
-    .news-list { display: grid; gap: 15px; margin-top: 15px; }
-    .news-item { padding: 18px; border: 1px solid #eee; border-radius: 8px; }
-    .news-title { font-size: 17px; font-weight: 600; color: #0066cc; }
-    .news-title a { text-decoration: none; }
-    .news-meta { font-size: 13px; color: #666; margin: 6px 0; }
-    .news-source { font-size: 12px; background: #f5f7fa; padding: 3px 6px; border-radius: 4px; color: #888; }
-    .last-update { text-align: right; font-size: 12px; color: #888; margin-bottom: 10px; }
-    .error { color: #dc3545; text-align: center; padding: 20px; }
-    .filter-bar { margin-bottom: 15px; text-align: right; }
-    .filter-bar select { padding: 5px; border-radius: 4px; border: 1px solid #ddd; }
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:Arial,sans-serif;background:#f0f2f5;padding:20px}
+    .container{max-width:1200px;margin:0 auto;background:white;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.05)}
+    header{background:#003366;color:white;padding:25px;text-align:center}
+    h1{font-size:24px;margin-bottom:8px}
+    .tagline{font-size:14px;opacity:.9}
+    .push-notice{background:#e3f2fd;color:#0066cc;padding:12px;text-align:center;font-size:14px;border-bottom:1px solid #bbdefb}
+    #pushBtn{background:#0066cc;color:white;border:none;padding:6px 12px;border-radius:6px;cursor:pointer;margin-left:8px}
+    #pushBtn:disabled{background:#90caf9;cursor:not-allowed}
+    .tabs{display:flex;border-bottom:2px solid #e9ebee}
+    .tab{padding:15px 25px;cursor:pointer;font-weight:600;background:#f5f7fa;border:none;flex:1}
+    .tab.active{background:white;border-bottom:3px solid #0066cc;color:#0066cc}
+    .tab-content{padding:25px;display:none}
+    .tab-content.active{display:block}
+    .news-list{display:grid;gap:15px;margin-top:15px}
+    .news-item{padding:18px;border:1px solid #eee;border-radius:8px}
+    .news-title{font-size:17px;font-weight:600;color:#0066cc}
+    .news-title a{text-decoration:none}
+    .news-meta{font-size:13px;color:#666;margin:6px 0}
+    .news-source{font-size:12px;background:#f5f7fa;padding:3px 6px;border-radius:4px;color:#888}
+    .last-update{text-align:right;font-size:12px;color:#888;margin-bottom:10px}
+    .error{color:#dc3545;text-align:center;padding:20px}
+    .filter-bar{margin-bottom:15px;text-align:right}
+    .filter-bar select{padding:5px;border-radius:4px;border:1px solid #ddd}
   </style>
 </head>
 <body>
 <div class="container">
   <header>
     <h1>⚡ CLP & HK Electric Full Channel Monitor</h1>
-    <p class="tagline">Official News + Digital Media | Multi-Language Support | Instant Alerts</p>
+    <p class="tagline">Official News + Digital Media | Multi-Language | Instant Web Push Alerts</p>
   </header>
 
   <div class="push-notice">
@@ -52,7 +52,7 @@
 
   <div id="all" class="tab-content active">
     <div class="filter-bar">
-      <label for="dateFilter">Show news from: </label>
+      <label for="dateFilter">Show news from:</label>
       <select id="dateFilter" onchange="loadNews()">
         <option value="7">Last 7 days</option>
         <option value="14">Last 14 days</option>
@@ -67,7 +67,7 @@
 
   <div id="clp" class="tab-content">
     <div class="filter-bar">
-      <label for="dateFilterClp">Show news from: </label>
+      <label for="dateFilterClp">Show news from:</label>
       <select id="dateFilterClp" onchange="loadNews()">
         <option value="7">Last 7 days</option>
         <option value="14">Last 14 days</option>
@@ -82,7 +82,7 @@
 
   <div id="hke" class="tab-content">
     <div class="filter-bar">
-      <label for="dateFilterHke">Show news from: </label>
+      <label for="dateFilterHke">Show news from:</label>
       <select id="dateFilterHke" onchange="loadNews()">
         <option value="7">Last 7 days</option>
         <option value="14">Last 14 days</option>
@@ -97,7 +97,7 @@
 
   <div id="media" class="tab-content">
     <div class="filter-bar">
-      <label for="dateFilterMedia">Show news from: </label>
+      <label for="dateFilterMedia">Show news from:</label>
       <select id="dateFilterMedia" onchange="loadNews()">
         <option value="7">Last 7 days</option>
         <option value="14">Last 14 days</option>
@@ -112,200 +112,142 @@
 </div>
 
 <script>
-// English-only keywords (matches English/Traditional/Simplified Chinese news)
-const SEARCH_KEY = "CLP+HK+Electric+China+Light+Power+Hong+Kong+Electric";
+const SEARCH_KEY = "CLP+HK+Electric+China+Light+Power";
+const PROXY = "https://api.allorigins.win/raw?url=";
+const RSS_TO_JSON = "https://api.rss2json.com/v1/api.json?rss_url=";
 
-// Full media list (English only, no Chinese characters)
 const RSS_FEEDS = [
-  // CLP Official
   "https://www.clp.com.hk/en/media-resources/media-releases/rss",
   "https://www.clpgroup.com/en/media-centre/resources/media-releases/rss",
-  // HK Electric Official
   "https://www.hkelectric.com/en/media/press-releases/rss",
   "https://www.hkelectric.com/en/francis-blog/rss",
-
-  // Hong Kong Digital Media
-  `https://news.google.com/rss/search?q=${SEARCH_KEY}+site:scmp.com&hl=en-US&gl=HK&ceid=HK:en`,
-  `https://news.google.com/rss/search?q=${SEARCH_KEY}+site:hk01.com&hl=en-US&gl=HK&ceid=HK:en`,
-  `https://news.google.com/rss/search?q=${SEARCH_KEY}+site:thestandard.com.hk&hl=en-US&gl=HK&ceid=HK:en`,
-  `https://news.google.com/rss/search?q=${SEARCH_KEY}+site:mingpao.com&hl=en-US&gl=HK&ceid=HK:en`,
-  `https://news.google.com/rss/search?q=${SEARCH_KEY}+site:singtao.com&hl=en-US&gl=HK&ceid=HK:en`,
-  `https://news.google.com/rss/search?q=${SEARCH_KEY}+site:etnet.com.hk&hl=en-US&gl=HK&ceid=HK:en`,
-  `https://news.google.com/rss/search?q=${SEARCH_KEY}+site:bau.com.hk&hl=en-US&gl=HK&ceid=HK:en`,
-  `https://news.google.com/rss/search?q=${SEARCH_KEY}+site:metroradio.com.hk&hl=en-US&gl=HK&ceid=HK:en`,
-  `https://news.google.com/rss/search?q=${SEARCH_KEY}+site:news.rthk.hk&hl=en-US&gl=HK&ceid=HK:en`,
-  `https://news.google.com/rss/search?q=${SEARCH_KEY}+site:web.wenweipo.com&hl=en-US&gl=HK&ceid=HK:en`,
-  `https://news.google.com/rss/search?q=${SEARCH_KEY}+site:aastocks.com&hl=en-US&gl=HK&ceid=HK:en`,
-  `https://news.google.com/rss/search?q=${SEARCH_KEY}+site:orientaldaily.on.cc&hl=en-US&gl=HK&ceid=HK:en`,
-  `https://news.google.com/rss/search?q=${SEARCH_KEY}+site:headline.com.hk&hl=en-US&gl=HK&ceid=HK:en`
+  `${PROXY}${encodeURIComponent(`https://news.google.com/rss/search?q=${SEARCH_KEY}&hl=en-US&gl=HK&ceid=US:en`)}`
 ];
 
 let ALL_NEWS = [];
 let lastCheckTime = new Date();
-const CORS_PROXY = "https://corsproxy.io/?";
-const API = "https://api.rss2json.com/v1/api.json?rss_url=";
 
-// Tab switch function
 function openTab(tabName) {
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
   event.target.classList.add('active');
   document.getElementById(tabName).classList.add('active');
 }
 
-// Get selected date filter value
 function getSelectedDays() {
   return parseInt(document.getElementById("dateFilter").value);
 }
 
-// Filter news by date range
-function filterByDate(newsItems, days) {
-  if (days === 0) return newsItems;
-  const cutoffDate = new Date();
-  cutoffDate.setDate(cutoffDate.getDate() - days);
-  return newsItems.filter(item => new Date(item.pubDate) >= cutoffDate);
+function filterByDate(items, days) {
+  if(days===0) return items;
+  const cutoff = new Date();
+  cutoff.setDate(cutoff.getDate()-days);
+  return items.filter(i=>new Date(i.pubDate)>=cutoff);
 }
 
-// Extract domain name from URL (for duplicate detection)
 function getDomain(url) {
-  try {
-    return new URL(url).hostname;
-  } catch (e) {
-    return "unknown";
-  }
+  try{return new URL(url).hostname}catch(e){return "unknown"}
 }
 
-// Format time to hour (for duplicate detection)
-function getTimeHour(dateStr) {
-  const d = new Date(dateStr);
-  return d.toISOString().slice(0, 13);
+function getTimeKey(dateStr) {
+  return new Date(dateStr).toISOString().slice(0,13);
 }
 
-// Remove duplicate news (same news in different languages)
-function deduplicateNews(items) {
-  const unique = [];
+function deduplicate(items) {
   const seen = new Set();
-
-  for (const item of items) {
-    const domain = getDomain(item.link);
-    const time = getTimeHour(item.pubDate);
-    // Unique key: domain + publish hour + core keyword match
-    const key = `${domain}|${time}`;
-
-    if (!seen.has(key)) {
-      seen.add(key);
-      unique.push(item);
-    }
-  }
-  return unique;
+  return items.filter(item=>{
+    const key = `${getDomain(item.link)}|${getTimeKey(item.pubDate)}`;
+    if(seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
 }
 
-// Render news to page
 function renderNews(id, items) {
   let html = "";
-  items.forEach(i => {
-    html += `
+  items.forEach(i=>{
+    html+=`
       <div class="news-item">
         <div class="news-title"><a href="${i.link}" target="_blank">${i.title}</a></div>
         <div class="news-meta">${i.pubDate}</div>
         <div class="news-source">${i.source}</div>
       </div>`;
   });
-  document.getElementById(id).innerHTML = html || "<p>No updates available in the selected time range.</p>";
+  document.getElementById(id).innerHTML = html||"<p>No updates available.</p>";
 }
 
-// Main news loading function
 async function loadNews() {
   ALL_NEWS = [];
   const days = getSelectedDays();
+  const loading = "Loading news...";
+  document.getElementById("updateTimeAll").innerText=loading;
+  document.getElementById("updateTimeClp").innerText=loading;
+  document.getElementById("updateTimeHke").innerText=loading;
+  document.getElementById("updateTimeMedia").innerText=loading;
 
-  // Reset loading status
-  document.getElementById("updateTimeAll").innerText = "Loading news...";
-  document.getElementById("updateTimeClp").innerText = "Loading news...";
-  document.getElementById("updateTimeHke").innerText = "Loading news...";
-  document.getElementById("updateTimeMedia").innerText = "Loading news...";
-
-  // Fetch all news
-  for (let feed of RSS_FEEDS) {
-    try {
-      const feedUrl = encodeURIComponent(API + encodeURIComponent(feed));
-      const proxyUrl = CORS_PROXY + feedUrl;
-      let res = await fetch(proxyUrl);
-      if (!res.ok) throw new Error("Fetch failed");
-      let data = await res.json();
-      if (data.items) ALL_NEWS.push(...data.items.map(i => ({...i, source: data.feed.title})));
-    } catch (e) {
-      console.error("Failed to load feed:", feed, e);
-    }
+  for(const feed of RSS_FEEDS) {
+    try{
+      let url = feed.startsWith("http") ? `${PROXY}${encodeURIComponent(RSS_TO_JSON+encodeURIComponent(feed))}` : feed;
+      const res = await fetch(url);
+      const data = await res.json();
+      if(data.items) ALL_NEWS.push(...data.items.map(i=>({...i,source:data.feed.title||"Media"})));
+    }catch(e){console.error("Load failed:",feed)}
   }
 
-  // Sort, deduplicate and filter news
-  ALL_NEWS.sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
-  const uniqueNews = deduplicateNews(ALL_NEWS);
-  const filteredNews = filterByDate(uniqueNews, days);
-  const timeStr = "Last Updated: " + new Date().toLocaleString();
+  ALL_NEWS.sort((a,b)=>new Date(b.pubDate)-new Date(a.pubDate));
+  const unique = deduplicate(ALL_NEWS);
+  const filtered = filterByDate(unique, days);
+  const timeStr = "Last Updated: "+new Date().toLocaleString();
 
-  // Update all tabs
-  document.getElementById("updateTimeAll").innerText = timeStr;
-  document.getElementById("updateTimeClp").innerText = timeStr;
-  document.getElementById("updateTimeHke").innerText = timeStr;
-  document.getElementById("updateTimeMedia").innerText = timeStr;
+  document.getElementById("updateTimeAll").innerText=timeStr;
+  document.getElementById("updateTimeClp").innerText=timeStr;
+  document.getElementById("updateTimeHke").innerText=timeStr;
+  document.getElementById("updateTimeMedia").innerText=timeStr;
 
-  // Categorize news
-  renderNews("allNews", filteredNews);
-  renderNews("clpNews", filteredNews.filter(i => i.source.toLowerCase().includes("clp") || i.source.toLowerCase().includes("china light")));
-  renderNews("hkeNews", filteredNews.filter(i => i.source.toLowerCase().includes("electric") || i.source.toLowerCase().includes("hong kong electric")));
-  renderNews("mediaNews", filteredNews.filter(i => 
-    !i.source.toLowerCase().includes("clp") && 
-    !i.source.toLowerCase().includes("electric")
-  ));
+  renderNews("allNews", filtered);
+  renderNews("clpNews", filtered.filter(i=>i.source.toLowerCase().includes("clp")||i.source.toLowerCase().includes("china light")));
+  renderNews("hkeNews", filtered.filter(i=>i.source.toLowerCase().includes("electric")||i.source.toLowerCase().includes("hong kong electric")));
+  renderNews("mediaNews", filtered.filter(i=>!i.source.toLowerCase().includes("clp")&&!i.source.toLowerCase().includes("electric")));
 
   checkNewUpdates();
 }
 
-// Push notification functions
 const pushBtn = document.getElementById('pushBtn');
 let isPushEnabled = false;
 
-if ('serviceWorker' in navigator && 'Notification' in window) {
+if('serviceWorker' in navigator&&'Notification' in window) {
   navigator.serviceWorker.register('/service-worker.js');
   pushBtn.disabled = false;
 }
 
-pushBtn.addEventListener('click', async () => {
-  if (isPushEnabled) {
-    alert('Push notifications are already enabled!');
-    return;
-  }
-  const permission = await Notification.requestPermission();
-  if (permission === 'granted') {
-    pushBtn.textContent = 'Push Enabled ✅';
-    pushBtn.disabled = true;
-    isPushEnabled = true;
-    alert('Success! You will receive pop-up alerts for new updates.');
-  } else {
-    alert('Push notifications denied. Please enable in browser settings.');
+pushBtn.addEventListener('click',async()=>{
+  if(isPushEnabled){alert("Push already enabled");return}
+  const perm = await Notification.requestPermission();
+  if(perm==="granted"){
+    pushBtn.textContent="Push Enabled ✅";
+    pushBtn.disabled=true;
+    isPushEnabled=true;
+    alert("Push enabled successfully");
+  }else{
+    alert("Push denied. Please enable in browser settings");
   }
 });
 
-// Check for new updates and send alerts
 function checkNewUpdates() {
-  if (!ALL_NEWS.length || !isPushEnabled) return;
-  const latestNews = ALL_NEWS[0];
-  const latestTime = new Date(latestNews.pubDate);
-  if (latestTime > lastCheckTime) {
+  if(!ALL_NEWS.length||!isPushEnabled) return;
+  const latest = ALL_NEWS[0];
+  const latestTime = new Date(latest.pubDate);
+  if(latestTime>lastCheckTime) {
     lastCheckTime = latestTime;
-    new Notification(`New Update: ${latestNews.source}`, {
-      body: latestNews.title,
-      icon: 'https://cdn-icons-png.flaticon.com/512/1578/1578267.png',
-      badge: 'https://cdn-icons-png.flaticon.com/512/1578/1578267.png'
+    new Notification(`New Update: ${latest.source}`,{
+      body:latest.title,
+      icon:"https://cdn-icons-png.flaticon.com/512/1578/1578267.png"
     });
   }
 }
 
-// Initialize and auto-refresh every 15 minutes
 loadNews();
-setInterval(loadNews, 15 * 60 * 1000);
+setInterval(loadNews,15*60*1000);
 </script>
 </body>
 </html>
