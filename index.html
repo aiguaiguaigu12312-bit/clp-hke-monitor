@@ -48,7 +48,7 @@
   </div>
 
   <div id="all" class="tab-content active">
-    <div class="last-update" id="updateTime">Loading...</div>
+    <div class="last-update" id="updateTime">Loading news...</div>
     <div class="news-list" id="allNews"></div>
   </div>
   <div id="clp" class="tab-content"><div class="news-list" id="clpNews"></div></div>
@@ -69,6 +69,7 @@ const RSS_FEEDS = [
 
 let ALL_NEWS = [];
 let lastCheckTime = new Date();
+const CORS_PROXY = "https://api.allorigins.win/raw?url=";
 
 function openTab(tabName) {
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -83,7 +84,8 @@ async function loadNews() {
   
   for (let feed of RSS_FEEDS) {
     try {
-      let res = await fetch(API + encodeURIComponent(feed));
+      const proxyUrl = CORS_PROXY + encodeURIComponent(API + encodeURIComponent(feed));
+      let res = await fetch(proxyUrl);
       let data = await res.json();
       if (data.items) ALL_NEWS.push(...data.items.map(i => ({...i, source: data.feed.title})));
     } catch (e) {}
