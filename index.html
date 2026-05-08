@@ -26,13 +26,16 @@
     .news-meta { font-size: 13px; color: #666; margin: 6px 0; }
     .news-source { font-size: 12px; background: #f5f7fa; padding: 3px 6px; border-radius: 4px; color: #888; }
     .last-update { text-align: right; font-size: 12px; color: #888; margin-bottom: 10px; }
+    .error { color: #dc3545; text-align: center; padding: 20px; }
+    .filter-bar { margin-bottom: 15px; text-align: right; }
+    .filter-bar select { padding: 5px; border-radius: 4px; border: 1px solid #ddd; }
   </style>
 </head>
 <body>
 <div class="container">
   <header>
     <h1>⚡ CLP & HK Electric Full Channel Monitor</h1>
-    <p class="tagline">Official News + Media Coverage | Instant Web Push Alerts</p>
+    <p class="tagline">Official News + Digital Media Coverage | Instant Web Push Alerts</p>
   </header>
 
   <div class="push-notice">
@@ -48,28 +51,50 @@
   </div>
 
   <div id="all" class="tab-content active">
+    <div class="filter-bar">
+      <label for="dateFilter">Show news from: </label>
+      <select id="dateFilter" onchange="loadNews()">
+        <option value="7">Last 7 days</option>
+        <option value="14">Last 14 days</option>
+        <option value="30" selected>Last 30 days</option>
+        <option value="60">Last 60 days</option>
+        <option value="0">All available news</option>
+      </select>
+    </div>
     <div class="last-update" id="updateTime">Loading news...</div>
     <div class="news-list" id="allNews"></div>
   </div>
   <div id="clp" class="tab-content"><div class="news-list" id="clpNews"></div></div>
-  <div id="hke" class="tab-content"><div class="news-list" id="hkeNews"></div></div>
+  <div id="hke" class="tab-content"><div class="tab-content"><div class="news-list" id="hkeNews"></div></div>
   <div id="media" class="tab-content"><div class="news-list" id="mediaNews"></div></div>
 </div>
 
 <script>
 const RSS_FEEDS = [
+  // CLP Official
   "https://www.clp.com.hk/en/media-resources/media-releases/rss",
   "https://www.clpgroup.com/en/media-centre/resources/media-releases/rss",
+  // HK Electric Official
   "https://www.hkelectric.com/en/media/press-releases/rss",
   "https://www.hkelectric.com/en/francis-blog/rss",
+  // Digital Media (Hong Kong)
   "https://www.scmp.com/rss/search?q=CLP+HK+Electric",
   "https://www.hk01.com/rss/search?q=CLP+HK+Electric",
-  "https://www.thestandard.com.hk/rss/search?q=CLP+HK+Electric"
+  "https://www.thestandard.com.hk/rss/search?q=CLP+HK+Electric",
+  "https://www.mingpao.com/rss/listing/news?q=CLP+HK+Electric",
+  "https://www.etnet.com.hk/www/en/news/rss/search.php?q=CLP+Hong+Kong+Electric",
+  "https://news.google.com/rss/search?q=CLP+HK+Electric+site:bau.com.hk&hl=en-US&gl=HK&ceid=HK:en",
+  "https://news.google.com/rss/search?q=CLP+HK+Electric+site:metroradio.com.hk&hl=en-US&gl=HK&ceid=HK:en",
+  "https://news.google.com/rss/search?q=CLP+HK+Electric+site:news.rthk.hk&hl=en-US&gl=HK&ceid=HK:en",
+  "https://www.aastocks.com/en/scnews/rss/",
+  "https://orientaldaily.on.cc/rss/news.xml",
+  "https://www.headline.com.hk/rss/news.xml"
 ];
 
 let ALL_NEWS = [];
 let lastCheckTime = new Date();
-const CORS_PROXY = "https://api.allorigins.win/raw?url=";
+const CORS_PROXY = "https://corsproxy.io/?";
+const API = "https://api.rss2json.com/v1/api.json?rss_url=";
 
 function openTab(tabName) {
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -78,27 +103,46 @@ function openTab(tabName) {
   document.getElementById(tabName).classList.add('active');
 }
 
+function filterByDate(newsItems, days) {
+  if (days === 0) return newsItems;
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - days);
+  return newsItems.filter(item => new Date(item.pubDate) >= cutoffDate);
+}
+
 async function loadNews() {
   ALL_NEWS = [];
-  const API = "https://api.rss2json.com/v1/api.json?rss_url=";
-  
+  document.getElementById("updateTime").innerText = "Loading news...";
+  document.getElementById("allNews").innerHTML = "";
+  const selectedDays = parseInt(document.getElementById("dateFilter").value);
+
   for (let feed of RSS_FEEDS) {
     try {
-      const proxyUrl = CORS_PROXY + encodeURIComponent(API + encodeURIComponent(feed));
+      const feedUrl = encodeURIComponent(API + encodeURIComponent(feed));
+      const proxyUrl = CORS_PROXY + feedUrl;
       let res = await fetch(proxyUrl);
+      if (!res.ok) throw new Error("Fetch failed");
       let data = await res.json();
       if (data.items) ALL_NEWS.push(...data.items.map(i => ({...i, source: data.feed.title})));
-    } catch (e) {}
+    } catch (e) {
+      console.error("Failed to load feed:", feed, e);
+    }
+  }
+
+  if (ALL_NEWS.length === 0) {
+    document.getElementById("allNews").innerHTML = `<p class="error">No news loaded. Please refresh.</p>`;
+    document.getElementById("updateTime").innerText = "Last Updated: " + new Date().toLocaleString();
+    return;
   }
 
   ALL_NEWS.sort((a,b) => new Date(b.pubDate) - new Date(a.pubDate));
+  const filteredNews = filterByDate(ALL_NEWS, selectedDays);
   document.getElementById("updateTime").innerText = "Last Updated: " + new Date().toLocaleString();
   
-  renderNews("allNews", ALL_NEWS);
-  renderNews("clpNews", ALL_NEWS.filter(i => i.source.includes("CLP")));
-  renderNews("hkeNews", ALL_NEWS.filter(i => i.source.includes("Electric")));
-  renderNews("mediaNews", ALL_NEWS.filter(i => !i.source.includes("CLP") && !i.source.includes("Electric")));
-
+  renderNews("allNews", filteredNews);
+  renderNews("clpNews", filteredNews.filter(i => i.source.includes("CLP")));
+  renderNews("hkeNews", filteredNews.filter(i => i.source.includes("Electric")));
+  renderNews("mediaNews", filteredNews.filter(i => !i.source.includes("CLP") && !i.source.includes("Electric")));
   checkNewUpdates();
 }
 
@@ -133,9 +177,9 @@ pushBtn.addEventListener('click', async () => {
     pushBtn.textContent = 'Push Enabled ✅';
     pushBtn.disabled = true;
     isPushEnabled = true;
-    alert('Success! You will receive pop-up alerts for new updates.');
+    alert('Success! You will receive pop-up alerts.');
   } else {
-    alert('You denied push notifications. Please enable them in browser settings.');
+    alert('Push notifications denied. Please enable in browser settings.');
   }
 });
 
@@ -143,7 +187,6 @@ function checkNewUpdates() {
   if (!ALL_NEWS.length || !isPushEnabled) return;
   const latestNews = ALL_NEWS[0];
   const latestTime = new Date(latestNews.pubDate);
-  
   if (latestTime > lastCheckTime) {
     lastCheckTime = latestTime;
     new Notification(`New Update: ${latestNews.source}`, {
