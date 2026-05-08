@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CLP & HK Electric Real-Time Monitor | Web Push Alerts</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Arial', sans-serif; background: #f0f2f5; padding: 20px; }
+    .container { max-width: 1200px; margin: 0 auto; background: white; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+    header { background: #003366; color: white; padding: 25px; text-align: center; }
+    h1 { font-size: 24px; margin-bottom: 8px; }
+    .tagline { font-size: 14px; opacity: 0.9; }
+    .push-notice { background: #e3f2fd; color: #0066cc; padding: 12px; text-align: center; font-size: 14px; border-bottom: 1px solid #bbdefb; }
+    #pushBtn { background: #0066cc; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; margin-left: 8px; }
+    #pushBtn:disabled { background: #90caf9; cursor: not-allowed; }
+    .tabs { display: flex; border-bottom: 2px solid #e9ebee; }
+    .tab { padding: 15px 25px; cursor: pointer; font-weight: 600; background: #f5f7fa; border: none; flex: 1; }
+    .tab.active { background: white; border-bottom: 3px solid #0066cc; color: #0066cc; }
+    .tab-content { padding: 25px; display: none; }
+    .tab-content.active { display: block; }
+    .news-list { display: grid; gap: 15px; margin-top: 15px; }
+    .news-item { padding: 18px; border: 1px solid #eee; border-radius: 8px; }
+    .news-title { font-size: 17px; font-weight: 600; color: #0066cc; }
+    .news-title a { text-decoration: none; }
+    .news-meta { font-size: 13px; color: #666; margin: 6px 0; }
+    .news-source { font-size: 12px; background: #f5f7fa; padding: 3px 6px; border-radius: 4px; color: #888; }
+    .last-update { text-align: right; font-size: 12px; color: #888; margin-bottom: 10px; }
+  </style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>⚡ CLP & HK Electric Full Channel Monitor</h1>
+    <p class="tagline">Official News + Media Coverage | Instant Web Push Alerts</p>
+  </header>
+
+  <div class="push-notice">
+    <span>Enable mobile/desktop pop-up alerts for new updates</span>
+    <button id="pushBtn">Enable Push Notifications</button>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" onclick="openTab('all')">All Updates</button>
+    <button class="tab" onclick="openTab('clp')">CLP Official</button>
+    <button class="tab" onclick="openTab('hke')">HK Electric</button>
+    <button class="tab" onclick="openTab('media')">Media News</button>
+  </div>
+
+  <div id="all" class="tab-content active">
+    <div class="last-update" id="updateTime">Loading...</div>
+    <div class="news-list" id="allNews"></div>
+  </div>
+  <div id="clp" class="tab-content"><div class="news-list" id="clpNews"></div></div>
+  <div id="hke" class="tab-content"><div class="news-list" id="hkeNews"></div></div>
+  <div id="media" class="tab-content"><div class="news-list" id="mediaNews"></div></div>
+</div>
+
+<script>
+const RSS_FEEDS = [
+  "https://www.clp.com.hk/en/media-resources/media-releases/rss",
+  "https://www.clpgroup.com/en/media-centre/resources/media-releases/rss",
+  "https://www.hkelectric.com/en/media/press-releases/rss",
+  "https://www.hkelectric.com/en/francis-blog/rss",
+  "https://www.scmp.com/rss/search?q=CLP+HK+Electric",
+  "https://www.hk01.com/rss/search?q=CLP+HK+Electric",
+  "https://www.thestandard.com.hk/rss/search?q=CLP+HK+Electric"
+];
+
+let ALL_NEWS = [];
+let lastCheckTime = new Date();
+
+function openTab(tabName) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  event.target.classList.add('active');
+  document.getElementById(tabName).classList.add('active');
+}
+
+async function loadNews() {
+  ALL_NEWS = [];
+  const API = "https://api.rss2json.com/v1/api.json?rss_url=";
+  
+  for (let feed of RSS_FEEDS) {
+    try {
+      let res = await fetch(API + encodeURIComponent(feed));
+      let data = await res.json();
+      if (data.items) ALL_NEWS.push(...data.items.map(i => ({...i, source: data.feed.title})));
+    } catch (e) {}
+  }
+
+  ALL_NEWS.sort((a,b) => new Date(b.pubDate) - new Date(a.pubDate));
+  document.getElementById("updateTime").innerText = "Last Updated: " + new Date().toLocaleString();
+  
+  renderNews("allNews", ALL_NEWS);
+  renderNews("clpNews", ALL_NEWS.filter(i => i.source.includes("CLP")));
+  renderNews("hkeNews", ALL_NEWS.filter(i => i.source.includes("Electric")));
+  renderNews("mediaNews", ALL_NEWS.filter(i => !i.source.includes("CLP") && !i.source.includes("Electric")));
+
+  checkNewUpdates();
+}
+
+function renderNews(id, items) {
+  let html = "";
+  items.forEach(i => {
+    html += `
+      <div class="news-item">
+        <div class="news-title"><a href="${i.link}" target="_blank">${i.title}</a></div>
+        <div class="news-meta">${i.pubDate}</div>
+        <div class="news-source">${i.source}</div>
+      </div>`;
+  });
+  document.getElementById(id).innerHTML = html || "<p>No updates available.</p>";
+}
+
+const pushBtn = document.getElementById('pushBtn');
+let isPushEnabled = false;
+
+if ('serviceWorker' in navigator && 'Notification' in window) {
+  navigator.serviceWorker.register('/service-worker.js');
+  pushBtn.disabled = false;
+}
+
+pushBtn.addEventListener('click', async () => {
+  if (isPushEnabled) {
+    alert('Push notifications are already enabled!');
+    return;
+  }
+  const permission = await Notification.requestPermission();
+  if (permission === 'granted') {
+    pushBtn.textContent = 'Push Enabled ✅';
+    pushBtn.disabled = true;
+    isPushEnabled = true;
+    alert('Success! You will receive pop-up alerts for new updates.');
+  } else {
+    alert('You denied push notifications. Please enable them in browser settings.');
+  }
+});
+
+function checkNewUpdates() {
+  if (!ALL_NEWS.length || !isPushEnabled) return;
+  const latestNews = ALL_NEWS[0];
+  const latestTime = new Date(latestNews.pubDate);
+  
+  if (latestTime > lastCheckTime) {
+    lastCheckTime = latestTime;
+    new Notification(`New Update: ${latestNews.source}`, {
+      body: latestNews.title,
+      icon: 'https://cdn-icons-png.flaticon.com/512/1578/1578267.png',
+      badge: 'https://cdn-icons-png.flaticon.com/512/1578/1578267.png'
+    });
+  }
+}
+
+loadNews();
+setInterval(loadNews, 15 * 60 * 1000);
+</script>
+</body>
+</html>
