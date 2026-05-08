@@ -3,35 +3,145 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CLP & HK Electric Monitor</title>
+  <title>CLP & HK Electric Monitor | Professional Edition</title>
   <style>
     *{margin:0;padding:0;box-sizing:border-box}
     body{font-family:Arial,sans-serif;background:#f0f2f5;padding:20px}
-    .container{max-width:1200px;margin:0 auto;background:white;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.05)}
+    .container{max-width:1400px;margin:0 auto;background:white;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.05)}
     header{background:#003366;color:white;padding:25px;text-align:center}
     h1{font-size:24px;margin-bottom:8px}
     .tagline{font-size:14px;opacity:.9}
+    .push-notice{background:#e3f2fd;color:#0066cc;padding:12px;text-align:center;font-size:14px;border-bottom:1px solid #bbdefb}
+    #pushBtn{background:#0066cc;color:white;border:none;padding:6px 12px;border-radius:6px;cursor:pointer;margin-left:8px}
+    #pushBtn:disabled{background:#90caf9;cursor:not-allowed}
+    
+    /* Advanced Filter Panel */
+    .filter-panel{background:#f8f9fa;padding:20px;border-bottom:1px solid #e9ebee;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:15px}
+    .filter-group{display:flex;flex-direction:column}
+    .filter-group label{font-size:12px;font-weight:600;color:#666;margin-bottom:5px}
+    .filter-group select{padding:8px;border:1px solid #ddd;border-radius:4px;font-size:14px}
+    .filter-buttons{display:flex;gap:10px;align-items:flex-end}
+    .filter-btn{padding:8px 16px;border:none;border-radius:4px;cursor:pointer;font-weight:600}
+    .filter-btn.primary{background:#0066cc;color:white}
+    .filter-btn.secondary{background:#e9ebee;color:#333}
+    
+    /* Tabs */
     .tabs{display:flex;border-bottom:2px solid #e9ebee}
     .tab{padding:15px 25px;cursor:pointer;font-weight:600;background:#f5f7fa;border:none;flex:1}
     .tab.active{background:white;border-bottom:3px solid #0066cc;color:#0066cc}
     .tab-content{padding:25px;display:none}
     .tab-content.active{display:block}
+    
+    /* News List */
     .news-list{display:grid;gap:15px;margin-top:15px}
-    .news-item{padding:18px;border:1px solid #eee;border-radius:8px}
-    .news-title{font-size:17px;font-weight:600;color:#0066cc}
+    .news-item{padding:18px;border:1px solid #eee;border-radius:8px;transition:box-shadow 0.2s}
+    .news-item:hover{box-shadow:0 2px 8px rgba(0,0,0,0.08)}
+    .news-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;flex-wrap:wrap;gap:8px}
+    .news-title{font-size:17px;font-weight:600;color:#0066cc;flex:1;min-width:200px}
     .news-title a{text-decoration:none}
-    .news-meta{font-size:13px;color:#666;margin:6px 0}
+    .news-badges{display:flex;gap:5px;flex-shrink:0}
+    .badge{font-size:11px;padding:3px 8px;border-radius:12px;font-weight:600}
+    .badge-lang-en{background:#e3f2fd;color:#0066cc}
+    .badge-lang-zh{background:#fff3e0;color:#e65100}
+    .badge-sentiment-positive{background:#e8f5e9;color:#2e7d32}
+    .badge-sentiment-negative{background:#ffebee;color:#c62828}
+    .badge-sentiment-neutral{background:#f5f5f5;color:#616161}
+    .badge-source-official{background:#e3f2fd;color:#0066cc}
+    .badge-source-media{background:#f3e5f5;color:#7b1fa2}
+    .news-meta{font-size:13px;color:#666;margin:6px 0;display:flex;gap:15px;flex-wrap:wrap}
     .news-source{font-size:12px;background:#f5f7fa;padding:3px 6px;border-radius:4px;color:#888}
     .last-update{text-align:right;font-size:12px;color:#888;margin-bottom:10px}
     .loading{text-align:center;padding:40px;color:#666}
+    
+    /* Stats Panel */
+    .stats-panel{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:15px;margin-bottom:20px}
+    .stat-card{background:#f8f9fa;padding:15px;border-radius:8px;text-align:center}
+    .stat-value{font-size:24px;font-weight:700;color:#0066cc}
+    .stat-label{font-size:12px;color:#666;margin-top:5px}
   </style>
 </head>
 <body>
 <div class="container">
   <header>
-    <h1>⚡ CLP & HK Electric Monitor</h1>
-    <p class="tagline">Official News + Media Coverage | Real-Time Updates</p>
+    <h1>⚡ CLP & HK Electric Full Channel Monitor</h1>
+    <p class="tagline">Professional Edition | Multi-Language | Advanced Filtering | Smart Deduplication</p>
   </header>
+
+  <div class="push-notice">
+    <span>Enable mobile/desktop pop-up alerts for new updates</span>
+    <button id="pushBtn">Enable Push Notifications</button>
+  </div>
+
+  <!-- Advanced Filter Panel -->
+  <div class="filter-panel">
+    <div class="filter-group">
+      <label>Time Range</label>
+      <select id="timeRange" onchange="applyFilters()">
+        <option value="7">Last 7 days</option>
+        <option value="14">Last 14 days</option>
+        <option value="30" selected>Last 30 days</option>
+        <option value="60">Last 60 days</option>
+        <option value="0">All available news</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <label>Language</label>
+      <select id="languageFilter" onchange="applyFilters()">
+        <option value="all" selected>All Languages</option>
+        <option value="en">English Only</option>
+        <option value="zh">Chinese Only</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <label>Source Type</label>
+      <select id="sourceTypeFilter" onchange="applyFilters()">
+        <option value="all" selected>All Sources</option>
+        <option value="official">Official Only</option>
+        <option value="media">Media Only</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <label>Sentiment</label>
+      <select id="sentimentFilter" onchange="applyFilters()">
+        <option value="all" selected>All Sentiments</option>
+        <option value="positive">Positive Only</option>
+        <option value="negative">Negative Only</option>
+        <option value="neutral">Neutral Only</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <label>Sort By</label>
+      <select id="sortBy" onchange="applyFilters()">
+        <option value="time-desc" selected>Newest First</option>
+        <option value="time-asc">Oldest First</option>
+        <option value="relevance">Relevance</option>
+      </select>
+    </div>
+    <div class="filter-buttons">
+      <button class="filter-btn primary" onclick="loadNews()">Refresh</button>
+      <button class="filter-btn secondary" onclick="resetFilters()">Reset</button>
+    </div>
+  </div>
+
+  <!-- Stats Panel -->
+  <div class="stats-panel" id="statsPanel" style="display:none;padding:20px;border-bottom:1px solid #e9ebee;">
+    <div class="stat-card">
+      <div class="stat-value" id="totalNews">0</div>
+      <div class="stat-label">Total News</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value" id="englishNews">0</div>
+      <div class="stat-label">English News</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value" id="chineseNews">0</div>
+      <div class="stat-label">Chinese News</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value" id="officialNews">0</div>
+      <div class="stat-label">Official News</div>
+    </div>
+  </div>
 
   <div class="tabs">
     <button class="tab active" onclick="openTab('all')">All Updates</button>
@@ -50,8 +160,9 @@
 </div>
 
 <script>
-// Official RSS Feeds (Direct Access, No Proxy Needed)
-const OFFICIAL_FEEDS = [
+// Core Feed Configuration (Official + Media, No Proxy Needed)
+const FEED_CONFIG = [
+  // Official Feeds (Highest Priority)
   {
     name: "CLP Power Hong Kong",
     url: "https://www.clp.com.hk/en/media-resources/media-releases/rss",
@@ -75,11 +186,8 @@ const OFFICIAL_FEEDS = [
     url: "https://www.hkelectric.com/en/francis-blog/rss",
     type: "official",
     brand: "hke"
-  }
-];
-
-// Hong Kong Media Official RSS Feeds (No Google News, No Anti-Crawl)
-const MEDIA_FEEDS = [
+  },
+  // Hong Kong Media Feeds (Official RSS, No Google News)
   {
     name: "South China Morning Post",
     url: "https://www.scmp.com/rss/search?q=CLP+HK+Electric",
@@ -99,19 +207,188 @@ const MEDIA_FEEDS = [
     name: "RTHK News",
     url: "https://news.rthk.hk/rthk/en/rss/allnews.xml",
     type: "media"
+  },
+  {
+    name: "Sing Tao",
+    url: "https://www.singtao.ca/feed/?s=CLP+HK+Electric",
+    type: "media"
+  },
+  {
+    name: "Ming Pao",
+    url: "https://www.mingpao.com/rss/listing/news?q=CLP+HK+Electric",
+    type: "media"
   }
 ];
 
-const ALL_FEEDS = [...OFFICIAL_FEEDS, ...MEDIA_FEEDS];
-const RSS_TO_JSON = "https://api.rss2json.com/v1/api.json?rss_url=";
-let ALL_NEWS = [];
+// Sentiment Analysis Dictionary
+const SENTIMENT_KEYS = {
+  positive: ["success", "achieve", "expand", "growth", "profit", "win", "award", "innovate", "sustainable", "green", "benefit", "improve"],
+  negative: ["crisis", "problem", "issue", "delay", "loss", "fail", "controversy", "protest", "complaint", "fine", "penalty", "risk", "outage", "tariff", "hike"]
+};
+
+// Core Configuration
+const RSS_TO_JSON_API = "https://api.rss2json.com/v1/api.json?rss_url=";
+let FULL_NEWS_STORE = [];
+let LAST_UPDATE_TIMESTAMP = new Date();
+let PUSH_ENABLED = false;
 
 // Tab Switch Function
 function openTab(tabName) {
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
   event.target.classList.add('active');
   document.getElementById(tabName).classList.add('active');
+}
+
+// Get Filter Settings
+function getActiveFilters() {
+  return {
+    timeRange: parseInt(document.getElementById("timeRange").value),
+    language: document.getElementById("languageFilter").value,
+    sourceType: document.getElementById("sourceTypeFilter").value,
+    sentiment: document.getElementById("sentimentFilter").value,
+    sortBy: document.getElementById("sortBy").value
+  };
+}
+
+// Reset Filters
+function resetFilters() {
+  document.getElementById("timeRange").value = "30";
+  document.getElementById("languageFilter").value = "all";
+  document.getElementById("sourceTypeFilter").value = "all";
+  document.getElementById("sentimentFilter").value = "all";
+  document.getElementById("sortBy").value = "time-desc";
+  applyFilters();
+}
+
+// Language Detection
+function detectLanguage(text) {
+  const chineseRegex = /[\u4e00-\u9fff]/;
+  const hasChinese = chineseRegex.test(text);
+  const hasEnglish = /[a-zA-Z]/.test(text);
+  
+  if (hasChinese && !hasEnglish) return 'zh';
+  if (hasEnglish && !hasChinese) return 'en';
+  
+  const chineseCount = (text.match(chineseRegex) || []).length;
+  const englishCount = (text.match(/[a-zA-Z]/g) || []).length;
+  return chineseCount > englishCount ? 'zh' : 'en';
+}
+
+// Sentiment Analysis
+function analyzeSentiment(text) {
+  const lowerText = text.toLowerCase();
+  let positiveScore = 0;
+  let negativeScore = 0;
+  
+  SENTIMENT_KEYS.positive.forEach(word => {
+    if (lowerText.includes(word)) positiveScore++;
+  });
+  SENTIMENT_KEYS.negative.forEach(word => {
+    if (lowerText.includes(word)) negativeScore++;
+  });
+  
+  if (positiveScore > negativeScore) return 'positive';
+  if (negativeScore > positiveScore) return 'negative';
+  return 'neutral';
+}
+
+// Generate Semantic Fingerprint for Deduplication
+function generateFingerprint(title, pubDate) {
+  const cleanedTitle = title.toLowerCase()
+    .replace(/[^a-z0-9\u4e00-\u9fff]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+  
+  let hash = 0;
+  for (let i = 0; i < cleanedTitle.length; i++) {
+    hash = ((hash << 5) - hash) + cleanedTitle.charCodeAt(i);
+    hash |= 0;
+  }
+  
+  const dateKey = new Date(pubDate).toISOString().slice(0, 10);
+  return `${dateKey}|${Math.abs(hash)}`;
+}
+
+// Smart Deduplication
+function deduplicateNews(newsItems) {
+  const seen = new Map();
+  const unique = [];
+  
+  newsItems.forEach(item => {
+    const fingerprint = generateFingerprint(item.title, item.pubDate);
+    const priority = (item.type === 'official' ? 100 : 0) + (detectLanguage(item.title) === 'en' ? 50 : 0);
+    
+    if (!seen.has(fingerprint) || priority > seen.get(fingerprint).priority) {
+      seen.set(fingerprint, { item, priority });
+    }
+  });
+  
+  seen.forEach(({ item }) => unique.push(item));
+  return unique;
+}
+
+// Filter News
+function filterNews(newsItems) {
+  const filters = getActiveFilters();
+  
+  return newsItems.filter(item => {
+    // Time Filter
+    if (filters.timeRange > 0) {
+      const cutoff = new Date();
+      cutoff.setDate(cutoff.getDate() - filters.timeRange);
+      if (new Date(item.pubDate) < cutoff) return false;
+    }
+    
+    // Language Filter
+    if (filters.language === 'en' && item.language !== 'en') return false;
+    if (filters.language === 'zh' && item.language !== 'zh') return false;
+    
+    // Source Type Filter
+    if (filters.sourceType === 'official' && item.type !== 'official') return false;
+    if (filters.sourceType === 'media' && item.type !== 'media') return false;
+    
+    // Sentiment Filter
+    if (filters.sentiment !== 'all' && item.sentiment !== filters.sentiment) return false;
+    
+    return true;
+  });
+}
+
+// Sort News
+function sortNews(newsItems) {
+  const filters = getActiveFilters();
+  
+  return [...newsItems].sort((a, b) => {
+    switch (filters.sortBy) {
+      case 'time-desc':
+        return new Date(b.pubDate) - new Date(a.pubDate);
+      case 'time-asc':
+        return new Date(a.pubDate) - new Date(b.pubDate);
+      case 'relevance':
+        const aScore = (a.type === 'official' ? 10 : 0) + (a.title.toLowerCase().includes('clp') || a.title.toLowerCase().includes('electric') ? 5 : 0);
+        const bScore = (b.type === 'official' ? 10 : 0) + (b.title.toLowerCase().includes('clp') || b.title.toLowerCase().includes('electric') ? 5 : 0);
+        return bScore - aScore;
+      default:
+        return new Date(b.pubDate) - new Date(a.pubDate);
+    }
+  });
+}
+
+// Update Statistics
+function updateStats(newsItems) {
+  const stats = {
+    total: newsItems.length,
+    english: newsItems.filter(i => i.language === 'en').length,
+    chinese: newsItems.filter(i => i.language === 'zh').length,
+    official: newsItems.filter(i => i.type === 'official').length
+  };
+  
+  document.getElementById('totalNews').textContent = stats.total;
+  document.getElementById('englishNews').textContent = stats.english;
+  document.getElementById('chineseNews').textContent = stats.chinese;
+  document.getElementById('officialNews').textContent = stats.official;
+  document.getElementById('statsPanel').style.display = 'grid';
 }
 
 // Render News
@@ -120,37 +397,65 @@ function renderNews(containerId, newsItems) {
   newsItems.forEach(item => {
     html += `
       <div class="news-item">
-        <div class="news-title"><a href="${item.link}" target="_blank" rel="noopener">${item.title}</a></div>
-        <div class="news-meta">${item.pubDate}</div>
-        <div class="news-source">${item.source}</div>
+        <div class="news-header">
+          <div class="news-title"><a href="${item.link}" target="_blank" rel="noopener">${item.title}</a></div>
+          <div class="news-badges">
+            <span class="badge badge-lang-${item.language}">${item.language.toUpperCase()}</span>
+            <span class="badge badge-sentiment-${item.sentiment}">${item.sentiment.charAt(0).toUpperCase() + item.sentiment.slice(1)}</span>
+            <span class="badge badge-source-${item.type}">${item.type.charAt(0).toUpperCase() + item.type.slice(1)}</span>
+          </div>
+        </div>
+        <div class="news-meta">
+          <span>${item.pubDate}</span>
+          <span class="news-source">${item.source}</span>
+        </div>
       </div>`;
   });
-  document.getElementById(containerId).innerHTML = html || "<p>No news available.</p>";
+  document.getElementById(containerId).innerHTML = html || "<p>No news available for the selected filters.</p>";
 }
 
-// Main Load Function (100% Error Resilient)
+// Apply Filters
+function applyFilters() {
+  const filtered = filterNews(FULL_NEWS_STORE);
+  const sorted = sortNews(filtered);
+  
+  updateStats(sorted);
+  
+  const updateTime = "Last Updated: " + new Date().toLocaleString();
+  document.getElementById("updateTimeAll").innerText = updateTime;
+  
+  renderNews("allNews", sorted);
+  renderNews("clpNews", sorted.filter(i => i.brand === "clp"));
+  renderNews("hkeNews", sorted.filter(i => i.brand === "hke"));
+  renderNews("mediaNews", sorted.filter(i => i.type === "media"));
+}
+
+// Main Load Function
 async function loadNews() {
-  ALL_NEWS = [];
+  FULL_NEWS_STORE = [];
   const loadPromises = [];
 
-  // Load each feed independently
-  ALL_FEEDS.forEach(feed => {
+  FEED_CONFIG.forEach(feed => {
     const loadPromise = async () => {
       try {
-        // Direct API call, NO PROXY, NO DOUBLE ENCODING
-        const apiUrl = RSS_TO_JSON + encodeURIComponent(feed.url);
+        const apiUrl = RSS_TO_JSON_API + encodeURIComponent(feed.url);
         const response = await fetch(apiUrl);
         if (!response.ok) throw new Error(`HTTP error: ${response.status}`);
         
         const data = await response.json();
         if (data.items && data.items.length > 0) {
           data.items.forEach(item => {
-            ALL_NEWS.push({
+            // Add enhanced metadata
+            const enhancedItem = {
               ...item,
               source: feed.name,
               type: feed.type,
-              brand: feed.brand || "media"
-            });
+              brand: feed.brand || "media",
+              language: detectLanguage(item.title),
+              sentiment: analyzeSentiment(item.title),
+              fingerprint: generateFingerprint(item.title, item.pubDate)
+            };
+            FULL_NEWS_STORE.push(enhancedItem);
           });
         }
       } catch (error) {
@@ -160,26 +465,62 @@ async function loadNews() {
     loadPromises.push(loadPromise());
   });
 
-  // Wait for all feeds to load (even if some fail)
   await Promise.allSettled(loadPromises);
 
-  // Sort news by newest first
-  ALL_NEWS.sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
+  // Deduplicate and sort
+  FULL_NEWS_STORE = deduplicateNews(FULL_NEWS_STORE);
+  FULL_NEWS_STORE.sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
 
-  // Update timestamp
-  const updateTime = "Last Updated: " + new Date().toLocaleString();
-  document.getElementById("updateTimeAll").innerText = updateTime;
+  // Apply filters and render
+  applyFilters();
 
-  // Render to all tabs
-  renderNews("allNews", ALL_NEWS);
-  renderNews("clpNews", ALL_NEWS.filter(i => i.brand === "clp"));
-  renderNews("hkeNews", ALL_NEWS.filter(i => i.brand === "hke"));
-  renderNews("mediaNews", ALL_NEWS.filter(i => i.type === "media"));
+  // Check for new updates to push
+  checkForNewPush();
+}
+
+// Push Notification Functions
+const pushBtn = document.getElementById('pushBtn');
+
+if ('serviceWorker' in navigator && 'Notification' in window) {
+  navigator.serviceWorker.register('/service-worker.js').catch(err => console.log("SW registration skipped:", err));
+  pushBtn.disabled = false;
+}
+
+pushBtn.addEventListener('click', async () => {
+  if (PUSH_ENABLED) {
+    alert("Push notifications are already enabled!");
+    return;
+  }
+  const permission = await Notification.requestPermission();
+  if (permission === "granted") {
+    pushBtn.textContent = "Push Enabled ✅";
+    pushBtn.disabled = true;
+    PUSH_ENABLED = true;
+    alert("Success! You will receive alerts for new important updates.");
+  } else {
+    alert("Push notifications denied. Please enable them in your browser settings.");
+  }
+});
+
+// Smart Push Alerting
+function checkForNewPush() {
+  if (!FULL_NEWS_STORE.length || !PUSH_ENABLED) return;
+  
+  const latest = FULL_NEWS_STORE[0];
+  const latestTime = new Date(latest.pubDate);
+  
+  if (latestTime > LAST_UPDATE_TIMESTAMP) {
+    LAST_UPDATE_TIMESTAMP = latestTime;
+    new Notification(`New Update: ${latest.source}`, {
+      body: latest.title,
+      icon: "https://cdn-icons-png.flaticon.com/512/1578/1578267.png",
+      tag: "clp-hke-update"
+    });
+  }
 }
 
 // Initialize
 loadNews();
-// Auto-refresh every 15 minutes
 setInterval(loadNews, 15 * 60 * 1000);
 </script>
 </body>
