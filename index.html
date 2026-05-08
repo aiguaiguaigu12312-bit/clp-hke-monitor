@@ -3,148 +3,35 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CLP & HK Electric Monitor | Professional Edition</title>
+  <title>CLP & HK Electric Monitor</title>
   <style>
     *{margin:0;padding:0;box-sizing:border-box}
     body{font-family:Arial,sans-serif;background:#f0f2f5;padding:20px}
-    .container{max-width:1400px;margin:0 auto;background:white;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.05)}
+    .container{max-width:1200px;margin:0 auto;background:white;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.05)}
     header{background:#003366;color:white;padding:25px;text-align:center}
     h1{font-size:24px;margin-bottom:8px}
     .tagline{font-size:14px;opacity:.9}
-    .push-notice{background:#e3f2fd;color:#0066cc;padding:12px;text-align:center;font-size:14px;border-bottom:1px solid #bbdefb}
-    #pushBtn{background:#0066cc;color:white;border:none;padding:6px 12px;border-radius:6px;cursor:pointer;margin-left:8px}
-    #pushBtn:disabled{background:#90caf9;cursor:not-allowed}
-    
-    /* Advanced Filter Panel */
-    .filter-panel{background:#f8f9fa;padding:20px;border-bottom:1px solid #e9ebee;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:15px}
-    .filter-group{display:flex;flex-direction:column}
-    .filter-group label{font-size:12px;font-weight:600;color:#666;margin-bottom:5px}
-    .filter-group select,.filter-group input{padding:8px;border:1px solid #ddd;border-radius:4px;font-size:14px}
-    .filter-buttons{display:flex;gap:10px;align-items:flex-end}
-    .filter-btn{padding:8px 16px;border:none;border-radius:4px;cursor:pointer;font-weight:600}
-    .filter-btn.primary{background:#0066cc;color:white}
-    .filter-btn.secondary{background:#e9ebee;color:#333}
-    
-    /* Tabs */
     .tabs{display:flex;border-bottom:2px solid #e9ebee}
     .tab{padding:15px 25px;cursor:pointer;font-weight:600;background:#f5f7fa;border:none;flex:1}
     .tab.active{background:white;border-bottom:3px solid #0066cc;color:#0066cc}
     .tab-content{padding:25px;display:none}
     .tab-content.active{display:block}
-    
-    /* News List */
     .news-list{display:grid;gap:15px;margin-top:15px}
-    .news-item{padding:18px;border:1px solid #eee;border-radius:8px;transition:box-shadow 0.2s}
-    .news-item:hover{box-shadow:0 2px 8px rgba(0,0,0,0.08)}
-    .news-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;flex-wrap:wrap;gap:8px}
-    .news-title{font-size:17px;font-weight:600;color:#0066cc;flex:1;min-width:200px}
+    .news-item{padding:18px;border:1px solid #eee;border-radius:8px}
+    .news-title{font-size:17px;font-weight:600;color:#0066cc}
     .news-title a{text-decoration:none}
-    .news-badges{display:flex;gap:5px;flex-shrink:0}
-    .badge{font-size:11px;padding:3px 8px;border-radius:12px;font-weight:600}
-    .badge-lang-en{background:#e3f2fd;color:#0066cc}
-    .badge-lang-zh{background:#fff3e0;color:#e65100}
-    .badge-sentiment-positive{background:#e8f5e9;color:#2e7d32}
-    .badge-sentiment-negative{background:#ffebee;color:#c62828}
-    .badge-sentiment-neutral{background:#f5f5f5;color:#616161}
-    .badge-source-official{background:#e3f2fd;color:#0066cc}
-    .badge-source-media{background:#f3e5f5;color:#7b1fa2}
-    .news-meta{font-size:13px;color:#666;margin:6px 0;display:flex;gap:15px;flex-wrap:wrap}
+    .news-meta{font-size:13px;color:#666;margin:6px 0}
     .news-source{font-size:12px;background:#f5f7fa;padding:3px 6px;border-radius:4px;color:#888}
     .last-update{text-align:right;font-size:12px;color:#888;margin-bottom:10px}
-    .error{color:#dc3545;text-align:center;padding:20px}
-    .loading{display:flex;justify-content:center;align-items:center;padding:40px;flex-direction:column;gap:15px}
-    .spinner{width:40px;height:40px;border:4px solid #f3f3f3;border-top:4px solid #0066cc;border-radius:50%;animation:spin 1s linear infinite}
-    @keyframes spin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
-    
-    /* Stats Panel */
-    .stats-panel{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:15px;margin-bottom:20px}
-    .stat-card{background:#f8f9fa;padding:15px;border-radius:8px;text-align:center}
-    .stat-value{font-size:24px;font-weight:700;color:#0066cc}
-    .stat-label{font-size:12px;color:#666;margin-top:5px}
+    .loading{text-align:center;padding:40px;color:#666}
   </style>
 </head>
 <body>
 <div class="container">
   <header>
-    <h1>⚡ CLP & HK Electric Full Channel Monitor</h1>
-    <p class="tagline">Professional Edition | Multi-Language | Advanced Filtering | Smart Deduplication</p>
+    <h1>⚡ CLP & HK Electric Monitor</h1>
+    <p class="tagline">Official News + Media Coverage | Real-Time Updates</p>
   </header>
-
-  <div class="push-notice">
-    <span>Enable mobile/desktop pop-up alerts for new updates</span>
-    <button id="pushBtn">Enable Push Notifications</button>
-  </div>
-
-  <!-- Advanced Filter Panel -->
-  <div class="filter-panel">
-    <div class="filter-group">
-      <label>Time Range</label>
-      <select id="timeRange" onchange="applyFilters()">
-        <option value="7">Last 7 days</option>
-        <option value="14">Last 14 days</option>
-        <option value="30" selected>Last 30 days</option>
-        <option value="60">Last 60 days</option>
-        <option value="0">All available news</option>
-      </select>
-    </div>
-    <div class="filter-group">
-      <label>Language</label>
-      <select id="languageFilter" onchange="applyFilters()">
-        <option value="all" selected>All Languages</option>
-        <option value="en">English Only</option>
-        <option value="zh">Chinese Only</option>
-      </select>
-    </div>
-    <div class="filter-group">
-      <label>Source Type</label>
-      <select id="sourceTypeFilter" onchange="applyFilters()">
-        <option value="all" selected>All Sources</option>
-        <option value="official">Official Only</option>
-        <option value="media">Media Only</option>
-      </select>
-    </div>
-    <div class="filter-group">
-      <label>Sentiment</label>
-      <select id="sentimentFilter" onchange="applyFilters()">
-        <option value="all" selected>All Sentiments</option>
-        <option value="positive">Positive Only</option>
-        <option value="negative">Negative Only</option>
-        <option value="neutral">Neutral Only</option>
-      </select>
-    </div>
-    <div class="filter-group">
-      <label>Sort By</label>
-      <select id="sortBy" onchange="applyFilters()">
-        <option value="time-desc" selected>Newest First</option>
-        <option value="time-asc">Oldest First</option>
-        <option value="relevance">Relevance</option>
-      </select>
-    </div>
-    <div class="filter-buttons">
-      <button class="filter-btn primary" onclick="loadNews()">Refresh</button>
-      <button class="filter-btn secondary" onclick="resetFilters()">Reset</button>
-    </div>
-  </div>
-
-  <!-- Stats Panel -->
-  <div class="stats-panel" id="statsPanel" style="display:none;padding:20px;border-bottom:1px solid #e9ebee;">
-    <div class="stat-card">
-      <div class="stat-value" id="totalNews">0</div>
-      <div class="stat-label">Total News</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-value" id="englishNews">0</div>
-      <div class="stat-label">English News</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-value" id="chineseNews">0</div>
-      <div class="stat-label">Chinese News</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-value" id="officialNews">0</div>
-      <div class="stat-label">Official News</div>
-    </div>
-  </div>
 
   <div class="tabs">
     <button class="tab active" onclick="openTab('all')">All Updates</button>
@@ -155,438 +42,142 @@
 
   <div id="all" class="tab-content active">
     <div class="last-update" id="updateTimeAll">Loading news...</div>
-    <div class="news-list" id="allNews">
-      <div class="loading"><div class="spinner"></div><span>Fetching latest news...</span></div>
-    </div>
+    <div class="news-list" id="allNews"><div class="loading">Fetching latest news...</div></div>
   </div>
-
-  <div id="clp" class="tab-content">
-    <div class="last-update" id="updateTimeClp">Loading news...</div>
-    <div class="news-list" id="clpNews"></div>
-  </div>
-
-  <div id="hke" class="tab-content">
-    <div class="last-update" id="updateTimeHke">Loading news...</div>
-    <div class="news-list" id="hkeNews"></div>
-  </div>
-
-  <div id="media" class="tab-content">
-    <div class="last-update" id="updateTimeMedia">Loading news...</div>
-    <div class="news-list" id="mediaNews"></div>
-  </div>
+  <div id="clp" class="tab-content"><div class="news-list" id="clpNews"></div></div>
+  <div id="hke" class="tab-content"><div class="news-list" id="hkeNews"></div></div>
+  <div id="media" class="tab-content"><div class="news-list" id="mediaNews"></div></div>
 </div>
 
 <script>
-// Core Configuration
-const SEARCH_KEYWORDS = "CLP+HK+Electric+China+Light+Power+Hong+Kong+Electric";
-const CORS_PROXY = "https://corsproxy.io/?";
-const RSS_TO_JSON_API = "https://api.rss2json.com/v1/api.json?rss_url=";
-
-// Source Classification & Whitelist
-const SOURCE_RULES = {
-  official: ["clp.com.hk", "clpgroup.com", "hkelectric.com"],
-  media: [
-    "scmp.com", "hk01.com", "thestandard.com.hk", "mingpao.com", 
-    "singtao.com", "etnet.com.hk", "bau.com.hk", "metroradio.com.hk", 
-    "news.rthk.hk", "wenweipo.com", "aastocks.com", "orientaldaily.on.cc", 
-    "headline.com.hk", "google.com"
-  ]
-};
-
-// Sentiment Analysis Keywords
-const SENTIMENT_DICTIONARY = {
-  positive: ["success", "achieve", "expand", "growth", "profit", "win", "award", "innovate", "sustainable", "green", "benefit", "improve", "launch", "partnership"],
-  negative: ["crisis", "problem", "issue", "delay", "loss", "fail", "controversy", "protest", "complaint", "fine", "penalty", "risk", "outage", "tariff", "hike"]
-};
-
-// Full RSS Feed List (Official First, Guaranteed Load)
-const RSS_FEED_LIST = [
-  // CLP Official Feeds (Direct, No Google News Dependency)
-  "https://www.clp.com.hk/en/media-resources/media-releases/rss",
-  "https://www.clpgroup.com/en/media-centre/resources/media-releases/rss",
-  // HK Electric Official Feeds (Direct, No Google News Dependency)
-  "https://www.hkelectric.com/en/media/press-releases/rss",
-  "https://www.hkelectric.com/en/francis-blog/rss",
-  // Full Media Coverage via Google News
-  `https://news.google.com/rss/search?q=${SEARCH_KEYWORDS}&hl=en-US&gl=HK&ceid=HK:en`
+// Official RSS Feeds (Direct Access, No Proxy Needed)
+const OFFICIAL_FEEDS = [
+  {
+    name: "CLP Power Hong Kong",
+    url: "https://www.clp.com.hk/en/media-resources/media-releases/rss",
+    type: "official",
+    brand: "clp"
+  },
+  {
+    name: "CLP Group",
+    url: "https://www.clpgroup.com/en/media-centre/resources/media-releases/rss",
+    type: "official",
+    brand: "clp"
+  },
+  {
+    name: "HK Electric",
+    url: "https://www.hkelectric.com/en/media/press-releases/rss",
+    type: "official",
+    brand: "hke"
+  },
+  {
+    name: "HK Electric Francis' Blog",
+    url: "https://www.hkelectric.com/en/francis-blog/rss",
+    type: "official",
+    brand: "hke"
+  }
 ];
 
-// Global Variables
-let FULL_NEWS_STORE = [];
-let LAST_UPDATE_TIMESTAMP = new Date();
-let SEEN_NEWS_IDS = new Set();
+// Hong Kong Media Official RSS Feeds (No Google News, No Anti-Crawl)
+const MEDIA_FEEDS = [
+  {
+    name: "South China Morning Post",
+    url: "https://www.scmp.com/rss/search?q=CLP+HK+Electric",
+    type: "media"
+  },
+  {
+    name: "The Standard",
+    url: "https://www.thestandard.com.hk/rss/search?q=CLP+HK+Electric",
+    type: "media"
+  },
+  {
+    name: "Hong Kong Free Press",
+    url: "https://hongkongfp.com/feed?s=CLP+HK+Electric",
+    type: "media"
+  },
+  {
+    name: "RTHK News",
+    url: "https://news.rthk.hk/rthk/en/rss/allnews.xml",
+    type: "media"
+  }
+];
+
+const ALL_FEEDS = [...OFFICIAL_FEEDS, ...MEDIA_FEEDS];
+const RSS_TO_JSON = "https://api.rss2json.com/v1/api.json?rss_url=";
+let ALL_NEWS = [];
 
 // Tab Switch Function
 function openTab(tabName) {
-  document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
-  document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
   event.target.classList.add('active');
   document.getElementById(tabName).classList.add('active');
 }
 
-// Get Current Filter Settings
-function getActiveFilters() {
-  return {
-    timeRange: parseInt(document.getElementById("timeRange").value),
-    language: document.getElementById("languageFilter").value,
-    sourceType: document.getElementById("sourceTypeFilter").value,
-    sentiment: document.getElementById("sentimentFilter").value,
-    sortBy: document.getElementById("sortBy").value
-  };
-}
-
-// Reset All Filters to Default
-function resetFilters() {
-  document.getElementById("timeRange").value = "30";
-  document.getElementById("languageFilter").value = "all";
-  document.getElementById("sourceTypeFilter").value = "all";
-  document.getElementById("sentimentFilter").value = "all";
-  document.getElementById("sortBy").value = "time-desc";
-  applyFilters();
-}
-
-// Language Detection
-function detectContentLanguage(text) {
-  const chineseCharRegex = /[\u4e00-\u9fff]/;
-  const hasChinese = chineseCharRegex.test(text);
-  const hasEnglish = /[a-zA-Z]/.test(text);
-  
-  if (hasChinese && !hasEnglish) return 'zh';
-  if (hasEnglish && !hasChinese) return 'en';
-  
-  // Mixed content: calculate ratio
-  const chineseCount = (text.match(chineseCharRegex) || []).length;
-  const englishCount = (text.match(/[a-zA-Z]/g) || []).length;
-  return chineseCount > englishCount ? 'zh' : 'en';
-}
-
-// Source Type Classification
-function classifySourceType(sourceName, articleUrl) {
-  const url = articleUrl || "";
-  const sourceLower = sourceName.toLowerCase();
-  
-  if (SOURCE_RULES.official.some(domain => url.includes(domain) || sourceLower.includes(domain))) {
-    return 'official';
-  }
-  return 'media';
-}
-
-// Sentiment Analysis
-function analyzeContentSentiment(text) {
-  const lowerText = text.toLowerCase();
-  let positiveScore = 0;
-  let negativeScore = 0;
-  
-  SENTIMENT_DICTIONARY.positive.forEach(word => {
-    if (lowerText.includes(word)) positiveScore++;
-  });
-  SENTIMENT_DICTIONARY.negative.forEach(word => {
-    if (lowerText.includes(word)) negativeScore++;
-  });
-  
-  if (positiveScore > negativeScore) return 'positive';
-  if (negativeScore > positiveScore) return 'negative';
-  return 'neutral';
-}
-
-// Generate Semantic Fingerprint for Deduplication
-function generateSemanticFingerprint(title, publishDate) {
-  // Clean title for consistent hashing
-  const cleanedTitle = title.toLowerCase()
-    .replace(/[^a-z0-9\u4e00-\u9fff]/g, ' ')
-    .replace(/\s+/g, ' ')
-    .trim();
-  
-  // Simple 32-bit hash function
-  let hash = 0;
-  for (let i = 0; i < cleanedTitle.length; i++) {
-    hash = ((hash << 5) - hash) + cleanedTitle.charCodeAt(i);
-    hash |= 0;
-  }
-  
-  // Combine with date (rounded to 24h for event grouping)
-  const dateKey = new Date(publishDate).toISOString().slice(0, 10);
-  return `${dateKey}|${Math.abs(hash)}`;
-}
-
-// Smart Cross-Language Deduplication
-function deduplicateNewsList(newsItems) {
-  const seenFingerprints = new Map();
-  const uniqueItems = [];
-  
+// Render News
+function renderNews(containerId, newsItems) {
+  let html = "";
   newsItems.forEach(item => {
-    const fingerprint = generateSemanticFingerprint(item.title, item.pubDate);
-    const sourceType = classifySourceType(item.source, item.link);
-    const language = detectContentLanguage(item.title);
-    
-    // Priority scoring: Official > Media, English > Chinese
-    const priorityScore = (sourceType === 'official' ? 100 : 0) + (language === 'en' ? 50 : 0);
-    
-    // Keep only the highest priority version of duplicate news
-    if (!seenFingerprints.has(fingerprint) || priorityScore > seenFingerprints.get(fingerprint).score) {
-      seenFingerprints.set(fingerprint, { item, score: priorityScore });
-    }
-  });
-  
-  // Convert back to array
-  seenFingerprints.forEach(({ item }) => uniqueItems.push(item));
-  return uniqueItems;
-}
-
-// Filter News by All Active Criteria
-function filterNewsByCriteria(newsItems) {
-  const filters = getActiveFilters();
-  
-  return newsItems.filter(item => {
-    // Time Range Filter
-    if (filters.timeRange > 0) {
-      const cutoffDate = new Date();
-      cutoffDate.setDate(cutoffDate.getDate() - filters.timeRange);
-      if (new Date(item.pubDate) < cutoffDate) return false;
-    }
-    
-    // Language Filter
-    const itemLang = detectContentLanguage(item.title);
-    if (filters.language === 'en' && itemLang !== 'en') return false;
-    if (filters.language === 'zh' && itemLang !== 'zh') return false;
-    
-    // Source Type Filter
-    const itemSourceType = classifySourceType(item.source, item.link);
-    if (filters.sourceType === 'official' && itemSourceType !== 'official') return false;
-    if (filters.sourceType === 'media' && itemSourceType !== 'media') return false;
-    
-    // Sentiment Filter
-    const itemSentiment = analyzeContentSentiment(item.title);
-    if (filters.sentiment !== 'all' && itemSentiment !== filters.sentiment) return false;
-    
-    return true;
-  });
-}
-
-// Sort News by Selected Criteria
-function sortNewsList(newsItems) {
-  const filters = getActiveFilters();
-  
-  return [...newsItems].sort((a, b) => {
-    switch (filters.sortBy) {
-      case 'time-desc':
-        return new Date(b.pubDate) - new Date(a.pubDate);
-      case 'time-asc':
-        return new Date(a.pubDate) - new Date(b.pubDate);
-      case 'relevance':
-        // Relevance score: Official source + title keyword match
-        const aScore = (classifySourceType(a.source, a.link) === 'official' ? 10 : 0) +
-                      (a.title.toLowerCase().includes('clp') || a.title.toLowerCase().includes('electric') ? 5 : 0);
-        const bScore = (classifySourceType(b.source, b.link) === 'official' ? 10 : 0) +
-                      (b.title.toLowerCase().includes('clp') || b.title.toLowerCase().includes('electric') ? 5 : 0);
-        return bScore - aScore;
-      default:
-        return new Date(b.pubDate) - new Date(a.pubDate);
-    }
-  });
-}
-
-// Update Statistics Panel
-function updateStatisticsDashboard(newsItems) {
-  const stats = {
-    total: newsItems.length,
-    english: newsItems.filter(item => detectContentLanguage(item.title) === 'en').length,
-    chinese: newsItems.filter(item => detectContentLanguage(item.title) === 'zh').length,
-    official: newsItems.filter(item => classifySourceType(item.source, item.link) === 'official').length
-  };
-  
-  document.getElementById('totalNews').textContent = stats.total;
-  document.getElementById('englishNews').textContent = stats.english;
-  document.getElementById('chineseNews').textContent = stats.chinese;
-  document.getElementById('officialNews').textContent = stats.official;
-  document.getElementById('statsPanel').style.display = 'grid';
-}
-
-// Render News with Metadata Badges
-function renderNewsToContainer(containerId, newsItems) {
-  let htmlContent = "";
-  
-  newsItems.forEach(item => {
-    const lang = detectContentLanguage(item.title);
-    const sourceType = classifySourceType(item.source, item.link);
-    const sentiment = analyzeContentSentiment(item.title);
-    
-    htmlContent += `
+    html += `
       <div class="news-item">
-        <div class="news-header">
-          <div class="news-title"><a href="${item.link}" target="_blank" rel="noopener noreferrer">${item.title}</a></div>
-          <div class="news-badges">
-            <span class="badge badge-lang-${lang}">${lang === 'en' ? 'EN' : 'ZH'}</span>
-            <span class="badge badge-sentiment-${sentiment}">${sentiment.charAt(0).toUpperCase() + sentiment.slice(1)}</span>
-            <span class="badge badge-source-${sourceType}">${sourceType.charAt(0).toUpperCase() + sourceType.slice(1)}</span>
-          </div>
-        </div>
-        <div class="news-meta">
-          <span>${item.pubDate}</span>
-          <span class="news-source">${item.source}</span>
-        </div>
+        <div class="news-title"><a href="${item.link}" target="_blank" rel="noopener">${item.title}</a></div>
+        <div class="news-meta">${item.pubDate}</div>
+        <div class="news-source">${item.source}</div>
       </div>`;
   });
-  
-  const container = document.getElementById(containerId);
-  container.innerHTML = htmlContent || "<p>No news available for the selected filters.</p>";
+  document.getElementById(containerId).innerHTML = html || "<p>No news available.</p>";
 }
 
-// Apply All Filters and Re-Render
-function applyFilters() {
-  const filteredNews = filterNewsByCriteria(FULL_NEWS_STORE);
-  const sortedNews = sortNewsList(filteredNews);
-  
-  // Update stats
-  updateStatisticsDashboard(sortedNews);
-  
-  // Update timestamp
-  const updateTimeText = "Last Updated: " + new Date().toLocaleString();
-  document.getElementById("updateTimeAll").innerText = updateTimeText;
-  document.getElementById("updateTimeClp").innerText = updateTimeText;
-  document.getElementById("updateTimeHke").innerText = updateTimeText;
-  document.getElementById("updateTimeMedia").innerText = updateTimeText;
-  
-  // Render to all tabs
-  renderNewsToContainer("allNews", sortedNews);
-  renderNewsToContainer("clpNews", sortedNews.filter(item => 
-    item.source.toLowerCase().includes("clp") || 
-    item.source.toLowerCase().includes("china light") ||
-    (item.link && item.link.includes("clp.com.hk"))
-  ));
-  renderNewsToContainer("hkeNews", sortedNews.filter(item => 
-    item.source.toLowerCase().includes("electric") || 
-    item.source.toLowerCase().includes("hong kong electric") ||
-    (item.link && item.link.includes("hkelectric.com"))
-  ));
-  renderNewsToContainer("mediaNews", sortedNews.filter(item => 
-    classifySourceType(item.source, item.link) === 'media'
-  ));
-}
-
-// Main News Loading Function (Incremental + Error Resilient)
+// Main Load Function (100% Error Resilient)
 async function loadNews() {
-  // Reset loading state
-  document.getElementById("allNews").innerHTML = `
-    <div class="loading">
-      <div class="spinner"></div>
-      <span>Fetching latest news from official and media sources...</span>
-    </div>
-  `;
-  
-  const newFetchedNews = [];
-  const fetchPromises = [];
+  ALL_NEWS = [];
+  const loadPromises = [];
 
-  // Create fetch promises for all feeds (parallel loading)
-  RSS_FEED_LIST.forEach(feedUrl => {
-    const fetchPromise = async () => {
+  // Load each feed independently
+  ALL_FEEDS.forEach(feed => {
+    const loadPromise = async () => {
       try {
-        // Build full request URL
-        const encodedFeedUrl = encodeURIComponent(feedUrl);
-        const apiUrl = RSS_TO_JSON_API + encodedFeedUrl;
-        const fullProxyUrl = CORS_PROXY + encodeURIComponent(apiUrl);
-        
-        // Fetch data
-        const response = await fetch(fullProxyUrl);
+        // Direct API call, NO PROXY, NO DOUBLE ENCODING
+        const apiUrl = RSS_TO_JSON + encodeURIComponent(feed.url);
+        const response = await fetch(apiUrl);
         if (!response.ok) throw new Error(`HTTP error: ${response.status}`);
         
         const data = await response.json();
         if (data.items && data.items.length > 0) {
-          // Add enhanced metadata to each item
           data.items.forEach(item => {
-            item.enhanced = {
-              language: detectContentLanguage(item.title),
-              sourceType: classifySourceType(item.source, item.link),
-              sentiment: analyzeContentSentiment(item.title),
-              fingerprint: generateSemanticFingerprint(item.title, item.pubDate)
-            };
-            newFetchedNews.push({
+            ALL_NEWS.push({
               ...item,
-              source: data.feed.title || item.source || "Media Source"
+              source: feed.name,
+              type: feed.type,
+              brand: feed.brand || "media"
             });
           });
         }
       } catch (error) {
-        console.error("Failed to load feed:", feedUrl, error);
+        console.error("Failed to load feed:", feed.name, error);
       }
     };
-    fetchPromises.push(fetchPromise());
+    loadPromises.push(loadPromise());
   });
 
   // Wait for all feeds to load (even if some fail)
-  await Promise.allSettled(fetchPromises);
+  await Promise.allSettled(loadPromises);
 
-  // Merge with existing news, avoid duplicates
-  const existingItemIds = new Set(FULL_NEWS_STORE.map(item => item.link || item.title));
-  const trulyNewItems = newFetchedNews.filter(item => !existingItemIds.has(item.link || item.title));
-  
-  FULL_NEWS_STORE = [...trulyNewItems, ...FULL_NEWS_STORE];
-  
-  // Deduplicate full list
-  FULL_NEWS_STORE = deduplicateNewsList(FULL_NEWS_STORE);
-  
-  // Apply filters and render
-  applyFilters();
-  
-  // Check for new updates to push
-  checkForNewUpdatesAndPush(trulyNewItems);
+  // Sort news by newest first
+  ALL_NEWS.sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
+
+  // Update timestamp
+  const updateTime = "Last Updated: " + new Date().toLocaleString();
+  document.getElementById("updateTimeAll").innerText = updateTime;
+
+  // Render to all tabs
+  renderNews("allNews", ALL_NEWS);
+  renderNews("clpNews", ALL_NEWS.filter(i => i.brand === "clp"));
+  renderNews("hkeNews", ALL_NEWS.filter(i => i.brand === "hke"));
+  renderNews("mediaNews", ALL_NEWS.filter(i => i.type === "media"));
 }
 
-// Push Notification Functions
-const pushButton = document.getElementById('pushBtn');
-let pushNotificationsEnabled = false;
-
-// Service Worker Registration
-if ('serviceWorker' in navigator && 'Notification' in window) {
-  navigator.serviceWorker.register('/service-worker.js').catch(err => console.log("SW registration skipped:", err));
-  pushButton.disabled = false;
-}
-
-// Push Button Click Handler
-pushButton.addEventListener('click', async () => {
-  if (pushNotificationsEnabled) {
-    alert("Push notifications are already enabled!");
-    return;
-  }
-  const permission = await Notification.requestPermission();
-  if (permission === "granted") {
-    pushButton.textContent = "Push Enabled ✅";
-    pushButton.disabled = true;
-    pushNotificationsEnabled = true;
-    alert("Success! You will receive alerts for new important updates.");
-  } else {
-    alert("Push notifications denied. Please enable them in your browser settings.");
-  }
-});
-
-// Smart Push Alerting (Only Important Updates)
-function checkForNewUpdatesAndPush(newItems) {
-  if (!newItems || newItems.length === 0 || !pushNotificationsEnabled) return;
-  
-  // Only push official news or negative sentiment news
-  const importantUpdates = newItems.filter(item => {
-    const sourceType = classifySourceType(item.source, item.link);
-    const sentiment = analyzeContentSentiment(item.title);
-    return sourceType === 'official' || sentiment === 'negative';
-  });
-  
-  if (importantUpdates.length > 0) {
-    const latestUpdate = importantUpdates[0];
-    const latestUpdateTime = new Date(latestUpdate.pubDate);
-    
-    // Avoid duplicate pushes
-    if (latestUpdateTime > LAST_UPDATE_TIMESTAMP) {
-      LAST_UPDATE_TIMESTAMP = latestUpdateTime;
-      new Notification(`New Update: ${latestUpdate.source}`, {
-        body: latestUpdate.title,
-        icon: "https://cdn-icons-png.flaticon.com/512/1578/1578267.png",
-        tag: "clp-hke-update"
-      });
-    }
-  }
-}
-
-// Initialize App
+// Initialize
 loadNews();
 // Auto-refresh every 15 minutes
 setInterval(loadNews, 15 * 60 * 1000);
